@@ -1,4 +1,8 @@
-# 在不指定关联表的情况下关联关系是否会生成中间表
+# 学习spring-data-jpa的项目
+
+README.md中有总结，代码在src里面。
+
+## 在不指定关联表的情况下关联关系是否会生成中间表
 
 - 单向一对多，会生成
 - 单向多对一，不会生成
@@ -117,12 +121,14 @@ public class Author {
     private String name;
 }
 ```
+
 5.双向一对一
+
 ```java
 @Entity
 @Table(name = "users")
 public class User {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -152,7 +158,9 @@ public class Address {
     //... getters and setters
 }
 ```
+
 6.对于非强制的一对一关系，最好使用中间表，来避免出现空置的情况，下面的例子是雇员和工作电脑，雇员不一定有工作电脑，工作电脑也有可能是闲置，不属于某个雇员。同样的道理也可以推到一对多关系，也可以使用中间表。
+
 ```java
 @Entity
 @Table(name = "employee")
@@ -192,36 +200,39 @@ public class WorkStation {
     //... getters and setters
 }
 ```
+
 7.双向一对多关系
+
 ```
 @Entity
 public class Department {
- 
+
     @OneToMany(mappedBy = "department")
     private List<Employee> employees;
 }
- 
+
 @Entity
 public class Employee {
- 
+
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
 }
-
 ```
+
 8.双向多对多
+
 ```
 @Entity
 public class Student {
- 
+
     @ManyToMany(mappedBy = "students")
     private List<Course> courses;
 }
- 
+
 @Entity
 public class Course {
- 
+
     @ManyToMany
     @JoinTable(name = "course_student",
         joinColumns = @JoinColumn(name = "course_id"),
@@ -229,6 +240,7 @@ public class Course {
     private List<Student> students;
 }
 ```
-# mappedBy的具体使用及其含义
+
+## mappedBy的具体使用及其含义
 
 在双向关系中必须进行设置，避免建立多个字段来对应关联关系。
